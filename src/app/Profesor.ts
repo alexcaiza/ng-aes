@@ -10,4 +10,5 @@ export class Profesor {
     nombresEstudiante: string;
     apellidosEstudiante: string;
     estudiantes: Estudiante;
+    proyecto: string;
 }
