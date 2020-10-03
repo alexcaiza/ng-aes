@@ -14,7 +14,7 @@ export class ApiService {
 
   apiUrl = "http://localhost/curd";
   
-  PHP_API_SERVER = "http://localhost/ng-app3/backend";
+  PHP_API_SERVER = "http://192.168.100.3/ng-app3/backend";
   //PHP_API_SERVER = "https://ng-apps.000webhostapp.com/backend";
 
   httpOptions = {
