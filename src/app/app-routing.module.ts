@@ -1,32 +1,31 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { TodoComponent } from './todo/todo.component';
-import { TodoAddComponent } from './todo-add/todo-add.component';
-import { TodoEditComponent } from './todo-edit/todo-edit.component';
-import { TodoRegistroComponent } from './todo-registro/todo-registro.component';
+import { ReportComponent } from './pages/report/report.component';
+import { TeachersListComponent } from './pages/teachers-list/teachers-list.component';
+import { RegisterStudentComponent } from './pages/register-student/register-student.component';
 
 
 const routes: Routes = [
+
   {
     path: '',
-    component: TodoComponent,
+    component: TeachersListComponent,
     data: { title: 'List of todos' }
   },
   {
-    path: 'todo/add',
-    component: TodoAddComponent,
-    data: { title: 'Add todo' }
+    path: 'teachers-list',
+    component: TeachersListComponent,
+    data: { title: 'Profesores' }
   },
   {
-    path: 'todo/edit/:id',
-    component: TodoEditComponent,
-    data: { title: 'Edit todo' }
-  },
-  {
-    path: 'todo/registro/:profesorId',
-    component: TodoRegistroComponent,
+    path: 'register-student/:codigoprofesor',
+    component: RegisterStudentComponent,
     data: { title: 'Registro' }
+  },
+  {
+    path: 'report',
+    component: ReportComponent,
+    data: { title: 'Report' }
   },
 ];
 

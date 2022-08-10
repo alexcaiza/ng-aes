@@ -1,26 +1,39 @@
-    <?php
+<?php
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: PUT, GET, POST");
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     
-	$conn = new mysqli('localhost','root','','id14906430_ppe');
+	include("conexion.php");
+    
+    $response = [];
+    $profesor = null;
 	
-	$id = mysqli_real_escape_string($conn,(strip_tags($_GET["profesorId"],ENT_QUOTES)));
+    $codigoprofesor = mysqli_real_escape_string($con,(strip_tags($_GET["codigoprofesor"],ENT_QUOTES)));
     
-	$sql = "SELECT id, nombre, count(pe.id_estudiante) cantidad ";
-	$sql .= "FROM profesores p left join profesores_estudiantes pe on pe.id_profesor = p.id ";
-	$sql .= "where p.id = '$id' ";
-	$sql .= "group by id, nombre ";
-    
-	$result = $conn->query($sql);
-    $data = null;
-    if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-    $data = $row;
-    }
+	$sql = "SELECT p.codigoprofesor, p.nombre, count(pe.codigoestudiante) cantidad ";
+	$sql .= "FROM profesores p left join profesores_estudiantes pe on pe.codigoprofesor = p.codigoprofesor ";
+	$sql .= "where p.codigoprofesor = '$codigoprofesor' ";
+	$sql .= "group by p.codigoprofesor, p.nombre ";
+
+    $result = mysqli_query($con, $sql);
+	
+	$response['sql'] = $sql;
+
+    if ($result) {
+		$rows = mysqli_num_rows($result);
+		if ($rows == 0) {
+			$response['mensaje'] = "El profesor no tiene estudiantes asignados";
+		} else {
+			while ($row = mysqli_fetch_assoc($result)) {
+				$profesor = $row;
+			}
+            $response['error'] = "0";
+        }
     } else {
-    echo "0 results";
+		$response['mensaje'] = mysqli_errno($con) . ": " . mysqli_error($con);
+        $response['error'] = "1";
     }
-    $myJSON = json_encode($data);
-    echo $myJSON;
+
+    $response['profesor'] = $profesor;
+        
+    echo json_encode($response);

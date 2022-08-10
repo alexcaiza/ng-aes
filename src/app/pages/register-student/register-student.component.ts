@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators, NgForm} from "@angular/forms";
-import { ApiService } from '../api.service';
+
 import { ActivatedRoute, Router } from '@angular/router';
-import { Profesor } from '../profesor';
-import { Estudiante } from '../estudiante';
+import { Estudiante } from 'src/app/models/Estudiante';
+import { Profesor } from 'src/app/models/Profesor';
+import { ApiService } from 'src/app/services/api.service';
+
 
 @Component({
-  selector: 'app-todo-registro',
-  templateUrl: './todo-registro.component.html',
-  styleUrls: ['./todo-registro.component.css']
+  selector: 'app-register-student',
+  templateUrl: './register-student.component.html',
+  styleUrls: ['./register-student.component.css']
 })
-export class TodoRegistroComponent implements OnInit {
+export class RegisterStudentComponent implements OnInit {
 
   todoForm: FormGroup;
-  
+
   idProfesor:number= null;
   idEstudiante:number= null;
 
@@ -22,18 +24,18 @@ export class TodoRegistroComponent implements OnInit {
   datosForm:Profesor = null;
 
   estudiante: Estudiante = null;
- 
+
   constructor(
-    private formBuilder: FormBuilder, 
-    private activeRouter: ActivatedRoute, 
-    private router: Router, 
+    private formBuilder: FormBuilder,
+    private activeRouter: ActivatedRoute,
+    private router: Router,
     private api: ApiService
   ) { }
- 
+
   ngOnInit() {
-     
-    this.getDetail(this.activeRouter.snapshot.params['profesorId']);
- 
+
+    this.findProfesorById(this.activeRouter.snapshot.params['codigoprofesor']);
+
     this.todoForm = this.formBuilder.group({
       id: ['', Validators.compose([Validators.required])],
       nombre: ['', Validators.compose([Validators.required])],
@@ -43,24 +45,29 @@ export class TodoRegistroComponent implements OnInit {
       cursoEstudiante: [''],
     });
   }
- 
-  getDetail(id) {
-    this.api.getTodo(id)
-      .subscribe(data => {
-        this.idProfesor = data.id;
-        this.todoForm.setValue({
-          id: data.id,
-          nombre: data.nombre,
-          cantidad: data.cantidad,
+
+  findProfesorById(codigoprofesor) {
+    console.log('findProfesorById:', codigoprofesor);
+    this.api.getProfesor(codigoprofesor).subscribe(dataResponse => {
+      console.log('dataResponse:', dataResponse);
+      let profesor = dataResponse.profesor;
+
+      this.idProfesor = profesor.codigoprofesor;
+
+      this.todoForm.setValue({
+          id: profesor.codigoprofesor,
+          nombre: profesor.nombre,
+          cantidad: profesor.cantidad,
           cedulaEstudiante: '',
           nombresEstudiante: '',
           cursoEstudiante:'',
         });
-        console.log(data);
+
+      console.log(dataResponse);
       });
   }
 
-  updateTodo(form:NgForm) { 
+  updateTodo(form:NgForm) {
     this.api.updateTodo(this.idProfesor, form)
       .subscribe(res => {
           this.router.navigate(['/']);
@@ -68,10 +75,10 @@ export class TodoRegistroComponent implements OnInit {
           console.log(err);
         }
       );
-     
+
   }
 
-  registrarProfesorEstudiante(form:NgForm) { 
+  registrarProfesorEstudiante(form:NgForm) {
 
     console.log(form);
 
@@ -103,7 +110,7 @@ export class TodoRegistroComponent implements OnInit {
         }, (err) => {
           console.log(err);
         }
-      );     
+      );
   }
 
   buscarEstudianteByCedula() {
@@ -114,20 +121,20 @@ export class TodoRegistroComponent implements OnInit {
     this.api.buscarEstudianteByCedula(this.idProfesor, this.todoForm.value)
       .subscribe(res => {
         console.log('response: ' + JSON.stringify(res));
-        
+
         if (res != undefined) {
           if (res.error === 1) {
             this.message = res.mensaje;
           } else {
             if (res.estudiante != undefined) {
               this.estudiante = res.estudiante;
-              this.idEstudiante= res.estudiante.id;
+              this.idEstudiante= res.estudiante.codigoestudiante;
               console.log('this.estudiante: ' + JSON.stringify(this.estudiante));
               this.todoForm.patchValue({
                 nombresEstudiante: res.estudiante.nombres,
                 cursoEstudiante: res.estudiante.curso
               });
-            } else {              
+            } else {
               this.message = res.mensaje;
               this.estudiante = null;
               this.idEstudiante= null;
@@ -135,7 +142,7 @@ export class TodoRegistroComponent implements OnInit {
                 nombresEstudiante: '',
                 cursoEstudiante: ''
               });
-            }              
+            }
           }
         } else {
           this.message = "Error al buscar la cedula del estudiante";
@@ -143,7 +150,7 @@ export class TodoRegistroComponent implements OnInit {
       }, (err) => {
         console.log(err);
       }
-    ); 
+    );
   }
 
 }

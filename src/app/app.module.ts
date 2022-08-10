@@ -4,20 +4,22 @@ import {HttpClientModule} from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TodoComponent } from './todo/todo.component';
-import { TodoAddComponent } from './todo-add/todo-add.component';
-import { TodoEditComponent } from './todo-edit/todo-edit.component';
+
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TodoRegistroComponent } from './todo-registro/todo-registro.component';
+
+import { ReportComponent } from './pages/report/report.component';
+import { TeachersListComponent } from './pages/teachers-list/teachers-list.component';
+import { RegisterStudentComponent } from './pages/register-student/register-student.component';
+import { ExcelService } from './services/excel.service';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    TodoComponent,
-    TodoAddComponent,
-    TodoEditComponent,
-    TodoRegistroComponent,
+    ReportComponent,
+    TeachersListComponent,
+    RegisterStudentComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,7 @@ import { TodoRegistroComponent } from './todo-registro/todo-registro.component';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [ExcelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

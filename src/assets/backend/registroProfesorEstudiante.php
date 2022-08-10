@@ -32,7 +32,7 @@ if(isset($_GET['id'])){
 				
 				if (isset($profesorId) && isset($estudianteId)) {					
 				
-					$sqlEstudiante = "SELECT * FROM estudiantes WHERE id='$estudianteId'";
+					$sqlEstudiante = "SELECT * FROM estudiantes WHERE codigoestudiante='$estudianteId'";
 				
 					$checkEstudiante = mysqli_query($con, $sqlEstudiante);
 					
@@ -41,16 +41,16 @@ if(isset($_GET['id'])){
 					
 					if(mysqli_num_rows($checkEstudiante) > 0) {
 						
-						$sqlProfesorEstudiante = "SELECT * FROM profesores_estudiantes WHERE id_estudiante='$estudianteId'";
+						$sqlProfesorEstudiante = "SELECT * FROM profesores_estudiantes WHERE codigoestudiante='$estudianteId'";
 				
 						$checkProfesorEstudiante = mysqli_query($con, $sqlProfesorEstudiante);
 						
 						// Valida si el estudiante todavia no esta registrado
 						if(mysqli_num_rows($checkProfesorEstudiante) == 0) {
 							
-							$sqlCountProfesorEstudiante = "SELECT count(pe.id_estudiante) cantidad, p.cantidad_max ";
-							$sqlCountProfesorEstudiante .= "FROM profesores p left join profesores_estudiantes pe on pe.id_profesor = p.id ";
-							$sqlCountProfesorEstudiante .= "WHERE p.id = '$profesorId' ";
+							$sqlCountProfesorEstudiante = "SELECT count(pe.codigoestudiante) cantidad, p.cantidad_max ";
+							$sqlCountProfesorEstudiante .= "FROM profesores p left join profesores_estudiantes pe on pe.codigoprofesor = p.codigoprofesor ";
+							$sqlCountProfesorEstudiante .= "WHERE p.codigoprofesor = '$profesorId' ";
 							$sqlCountProfesorEstudiante .= "group by p.cantidad_max ";
 							
 							$resultCountProEst = mysqli_query($con, $sqlCountProfesorEstudiante);

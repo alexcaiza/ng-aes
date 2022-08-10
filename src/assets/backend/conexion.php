@@ -2,8 +2,8 @@
 /*Datos de conexion a la base de datos*/
 $db_host = "localhost";
 $db_user = "root";
-$db_pass = "";
-$db_name = "id14906430_ppe";
+$db_pass = "root";
+$db_name = "ng_aes";
  
 $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
  

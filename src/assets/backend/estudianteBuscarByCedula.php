@@ -15,7 +15,7 @@ if (!isset($_GET["cedula"]) || !isset($_GET["profesorId"])) {
 		$response['mensaje'] = 'El campo cedula esta vacio';
 	}
 	if (!isset($_GET["profesorId"])) {
-		$response['mensaje'] = 'El id del profesor esta vacio';
+		$response['mensaje'] = 'El codigo del profesor esta vacio';
 	}
 }
 else {
@@ -42,7 +42,7 @@ else {
 			}
 			
 			// Consulta los cursos del profesor
-			$sqlProCur = "select * from profesores_cursos pc where pc.id_profesor = '$profesorId'";	
+			$sqlProCur = "select * from profesores_cursos pc where pc.codigoprofesor = '$profesorId'";	
 			$resultProCur = mysqli_query($con, $sqlProCur);
 			$response['sqlProCur'] = $sqlProCur;
 			
@@ -61,6 +61,7 @@ else {
 					
 					// Valida si el curso del estudiante esta en los cursos del profesor
 					while ($row = mysqli_fetch_assoc($resultProCur)) {
+						// Concatena los cursos del profesor para presentar el mensaje si el estudiante no esta los cursos del profesor
 						$str_cursos .= $separador.$row["curso"];	
 						$separador = ",";
 						

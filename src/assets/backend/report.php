@@ -8,9 +8,16 @@
     $response = [];
     $profesores = array();    
 
-    $sql = "SELECT p.codigoprofesor, p.nombre, count(pe.codigoestudiante) cantidad, p.cantidad_max cantidadMax, p.proyecto, p.cursos ";
-	$sql .= "FROM profesores p left join profesores_estudiantes pe on pe.codigoprofesor = p.codigoprofesor ";
-	$sql .= "group by p.codigoprofesor, p.nombre";
+    $sql = "";
+	$sql .= " SELECT p.nombre as nombreprofesor, p.proyecto, e.cedula as cedulaestudiante, e.nombres as nombreestudiante, e.apellidos as apellidoestudiante, e.curso, e.paralelo";
+	$sql .= " FROM profesores_estudiantes pe ";
+	$sql .= " INNER JOIN profesores p on p.codigoprofesor = pe.codigoprofesor ";
+	$sql .= " INNER JOIN estudiantes e on e.codigoestudiante = pe.codigoestudiante ";
+	$sql .= " WHERE 1=1 ";
+	$sql .= " AND pe.estado = '1' ";
+	$sql .= " AND p.estado = '1' ";
+	$sql .= " AND e.estado = '1' ";
+	$sql .= " ORDER BY p.nombre, e.nombres, e.apellidos";
 
     $result = mysqli_query($con, $sql);
 	
@@ -19,7 +26,7 @@
 	if ($result) {
 		$rows = mysqli_num_rows($result);
 		if ($rows == 0) {
-			$response['mensaje'] = "No se encontro la lista de profesores";
+			$response['mensaje'] = "No se encontro la lista de estudiantes";
 		} else {
 			while ($row = mysqli_fetch_assoc($result)) {
 				$profesores[] = $row;

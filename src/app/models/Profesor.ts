@@ -1,7 +1,7 @@
-import { Estudiante } from './estudiante';
+import { Estudiante } from './Estudiante';
 
 export class Profesor {
-    id: number;
+    codigoprofesor: number;
     nombre: string;
     cantidad: number;
     cantidadMax: number;
