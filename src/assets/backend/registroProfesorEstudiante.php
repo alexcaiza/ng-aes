@@ -66,7 +66,7 @@ if(isset($_GET['id'])){
 							if ($cantidadEstudiantesProfesor < $cantidadMaximaEstudiantes) {
 							
 								// Registra el nuevo estudiante con el profesor seleccionado
-								$sqlInsert = "INSERT INTO profesores_estudiantes VALUES('$profesorId','$estudianteId')";							
+								$sqlInsert = "INSERT INTO profesores_estudiantes VALUES('$profesorId','$estudianteId','1')";							
 							
 								$resultset = mysqli_query($con, $sqlInsert) or die(mysqli_error());
 								
