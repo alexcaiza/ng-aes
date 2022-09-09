@@ -15,8 +15,10 @@ export class ApiService {
   apiUrl = "http://localhost/curd";
 
   //PHP_API_SERVER = "http://192.168.100.3/ng-aes/backend";
-  PHP_API_SERVER = "http://localhost/ng-aes/backend";
+  //PHP_API_SERVER = "http://localhost/ng-aes/backend";
   //PHP_API_SERVER = "https://ng-apps.000webhostapp.com/backend";
+
+  PHP_API_SERVER = "http://190.15.139.84:8080/ng-aes/backend";
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
